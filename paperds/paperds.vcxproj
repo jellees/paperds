@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM9-TS">
+      <Configuration>Release</Configuration>
+      <Platform>ARM9-TS</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <NLFPath>$(ProjectDir)\bin\ARM9-TS\Release\$(ProjectName).nlf</NLFPath>
+    <ProjectGuid>{3C8B73FB-22C9-49BA-BE0A-9D994D7F0B14}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM9-TS'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinSupportedVCTargetsVersion Condition="'$(MinSupportedVCTargetsVersion)' == ''">v110</MinSupportedVCTargetsVersion>
+    <_PlatformFolder>$(VCTargetsPath)\Platforms\ARM\</_PlatformFolder>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM9-TS'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM9-TS'">
+    <NMakeBuildCommandLine>call build.bat 2&lt;&amp;1 | sed -u -f Assets\errparse.sed</NMakeBuildCommandLine>
+    <NMakeOutput>run.bat</NMakeOutput>
+    <NMakeCleanCommandLine>clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>rebuild</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>SDK_ARM9;SDK_CODE_ARM;asm=;BOOL=bool;__arm</NMakePreprocessorDefinitions>
+    <IncludePath>
+    </IncludePath>
+    <NMakeForcedIncludes>
+    </NMakeForcedIncludes>
+    <NMakeIncludeSearchPath>$(TWLSDK_ROOT)\include;$(ProjectDir)\src;$(TWLSYSTEM_ROOT)\include;$(CWFolder_TWL)\ARM_EABI_Support\msl\MSL_C\MSL_Common\Include;$(CWFolder_TWL)\ARM_EABI_Support\msl\MSL_C++\MSL_Common\Include;$(CWFolder_TWL)\ARM_EABI_Support\msl\MSL_Extras\MSL_ARM\Include</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Assets\errparse.sed" />
+    <None Include="Assets\NitroDebugger.xaml" />
+    <None Include="build.bat" />
+    <None Include="NitroBuilder.exe" />
+    <None Include="clean.bat" />
+    <None Include="Nitro.lcf.lsf" />
+    <None Include="rebuild.bat" />
+    <None Include="ROM-TS.rsf" />
+    <None Include="build.config" />
+    <None Include="files\data\placeholder.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\core.cpp" />
+    <ClCompile Include="src\exception.cpp" />
+    <ClCompile Include="src\print.cpp" />
+    <ClCompile Include="src\Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\common.pch" />
+    <ClInclude Include="src\common.pch++" />
+    <ClInclude Include="src\core.h" />
+    <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\print.h" />
+    <ClInclude Include="src\Test.h" />
+  </ItemGroup>
+  <PropertyGroup>
+    <UseDefaultDebuggersPropertyPageSchemas>false</UseDefaultDebuggersPropertyPageSchemas>
+    <UseDefaultPropertyPageSchemas>false</UseDefaultPropertyPageSchemas>
+    <_ApplicableDebuggers>Desktop</_ApplicableDebuggers>
+    <DebuggerFlavor>NitroDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\ProjectItemsSchema.xml" />
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\directories.xml" />
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\debugger_general.xml" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\NitroDebugger.xaml" />
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\nmake.xml" />
+    <!-- project only rules -->
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile.xml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <!-- Property sheet only rules -->
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile_ps.xml;$(VCTargetsPath)$(LangID)\usermacros.xml">
+      <Context>PropertySheet</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+  <ItemGroup>
+    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\NitroDebugger.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectCapability Include="Nitro" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

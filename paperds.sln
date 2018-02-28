@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "paperds", "paperds\paperds.vcxproj", "{3C8B73FB-22C9-49BA-BE0A-9D994D7F0B14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM9-TS = Release|ARM9-TS
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C8B73FB-22C9-49BA-BE0A-9D994D7F0B14}.Release|ARM9-TS.ActiveCfg = Release|ARM9-TS
+		{3C8B73FB-22C9-49BA-BE0A-9D994D7F0B14}.Release|ARM9-TS.Build.0 = Release|ARM9-TS
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FDA19FD9-7F81-4983-8DB4-E69D619F26D7}
+	EndGlobalSection
+EndGlobal

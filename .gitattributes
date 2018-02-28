@@ -1,0 +1,37 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for Visual Studio
+*.cs     diff=csharp
+
+# Standard to msysgit
+*.doc	 diff=astextplain
+*.DOC	 diff=astextplain
+*.docx diff=astextplain
+*.DOCX diff=astextplain
+*.dot  diff=astextplain
+*.DOT  diff=astextplain
+*.pdf  diff=astextplain
+*.PDF	 diff=astextplain
+*.rtf	 diff=astextplain
+*.RTF	 diff=astextplain
+
+*.ntft binary
+*.nbfp binary
+*.5tx binary
+*.lz binary
+*.nsbmd binary
+*.nsbtx binary
+*.nsbca binary
+*.nsbta binary
+*.nsbtp binary
+*.nsbma binary
+*.nclr binary
+*.ncgr binary
+*.nscr binary
+*.ncer binary
+*.nftr binary
+*.nbfc binary
+*.nbfp binary
+*.sdat binary
+*.bnlyt binary

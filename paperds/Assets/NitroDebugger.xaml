@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule 
+  Name="NitroDebugger"
+  DisplayName="IS-NITRO-EMULATOR Debugger"
+  PageTemplate="debugger"
+  Order="300"
+  Description="Debugger options"
+  xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" />
+    </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="StartOptions" DisplayName="Start Options" Description="Start Options"/>
+  </Rule.Categories>
+
+    <StringProperty Name="NLFPath"
+                  DisplayName="NLF File Path"
+                  Description="Path to this projects NLF file">
+    </StringProperty>
+</Rule>
