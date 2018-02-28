@@ -60,5 +60,11 @@ static TPData mTPData[4];
 
 void Core_Init()
 {
-
+	// Setup 2 vram blocks for textures.
+	mSzWork = NNS_GfdGetLnkTexVramManagerWorkSize(4096);
+	mPMgrWork = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSzWork, 16);
+	NNS_GfdInitLnkTexVramManager(2 * 0x20000, 128 * 1024, mPMgrWork, mSzWork, TRUE);
+	uint32_t szWork = NNS_GfdGetLnkPlttVramManagerWorkSize(4096);
+	void* pMgrWork = NNS_FndAllocFromExpHeapEx(gHeapHandle, szWork, 16);
+	NNS_GfdInitLnkPlttVramManager(64 * 1024, pMgrWork, szWork, TRUE);
 }

@@ -25,15 +25,16 @@ Test::Test()
 	G3X_AlphaBlend(TRUE);                      // AlphaTest ON
 
 	G3X_SetClearColor(GX_RGB(119 >> 3, 199 >> 3, 244 >> 3), 0, 0x7fff, 63, FALSE);
+	G3_ViewPort(0, 0, 255, 191);
 	GX_SetDispSelect(GX_DISP_SELECT_MAIN_SUB);
 
 	NNS_GfdResetLnkTexVramState();
 	NNS_GfdResetLnkPlttVramState();
 
 	// Open model.
-	mModelResource = (NNSG3dResFileHeader*)OpenFile("/data/mario.nsbmd");
+	mModelResource = (NNSG3dResFileHeader*)OpenFile("/data/summersky.nsbmd");
 	NNS_G3dResDefaultSetup(mModelResource);
-	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)OpenFile("/data/mario.nsbtx");
+	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)OpenFile("/data/summersky.nsbtx");
 	NNS_G3dResDefaultSetup(resourceTextures);
 	NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(mModelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&mModelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(mModelResource), 0));
@@ -78,6 +79,10 @@ void Test::Update()
 
 void Test::Render()
 {
+	MtxFx44 mtx;
+	MTX_PerspectiveW(FX32_SIN30, FX32_COS30, 256 * 4096 / 192, FX32_CONST(1.5), FX32_CONST(2000), 1024, &mtx);
+	NNS_G3dGlbSetProjectionMtx(&mtx);
+
 	VecFx32 up = mUp;
 	VecFx32 pos = mPosition;
 	pos.x = (pos.x + 8) >> 4;
@@ -89,6 +94,7 @@ void Test::Render()
 	target.z = (target.z + 8) >> 4;
 	NNS_G3dGlbLookAt(&pos, &up, &target);
 	NNS_G3dGlbFlushP();
+
 	NNS_G3dGeFlushBuffer();
 
 	NNS_G3dGePushMtx();
@@ -98,6 +104,8 @@ void Test::Render()
 		NNS_G3dDraw(&mModelRender);
 	}
 	NNS_G3dGePopMtx(1);
-	NNS_G3dGlbFlush();
+	NNS_G3dGlbFlushP();
+
 	NNS_G3dGeFlushBuffer();
+	G3_SwapBuffers(GX_SORTMODE_MANUAL, GX_BUFFERMODE_Z);
 }

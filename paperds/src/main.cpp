@@ -64,8 +64,8 @@ void NitroMain()
 
 	OS_WaitVBlankIntr();
 
-	GX_SetMasterBrightness(-16);
-	GXS_SetMasterBrightness(-16);
+	GX_SetMasterBrightness(0);
+	GXS_SetMasterBrightness(0);
 	GX_DispOn();
 	GXS_DispOn();
 
