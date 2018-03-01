@@ -1,4 +1,7 @@
 #pragma once
+
+class CameraBehavior;
+
 class Camera
 {
 private:
@@ -13,8 +16,8 @@ private:
 	VecFx32* _target;
 
 	// All behaviors and the current active camera;
-	Camera* _standardCamera;
-	Camera* _currentCamera;
+	CameraBehavior* _standardCamera;
+	CameraBehavior* _currentCamera;
 
 	void Init(VecFx32* position);
 

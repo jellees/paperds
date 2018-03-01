@@ -92,6 +92,12 @@
     <ClCompile Include="src\player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\NormalBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Test.h">
@@ -107,6 +113,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\PlayerBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\NormalBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

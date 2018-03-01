@@ -54,6 +54,7 @@
     <None Include="files\data\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\player\NormalBehavior.cpp" />
     <ClCompile Include="src\player\Player.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -62,8 +63,10 @@
     <ClCompile Include="src\print.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\camera\StandardCamera.cpp" />
+    <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\player\NormalBehavior.h" />
     <ClInclude Include="src\player\Player.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\camera\CameraBehavior.h" />
@@ -72,9 +75,11 @@
     <ClInclude Include="src\common.pch++" />
     <ClInclude Include="src\core.h" />
     <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\player\PlayerBehavior.h" />
     <ClInclude Include="src\print.h" />
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\camera\StandardCamera.h" />
+    <ClInclude Include="src\util.h" />
   </ItemGroup>
   <PropertyGroup>
     <UseDefaultDebuggersPropertyPageSchemas>false</UseDefaultDebuggersPropertyPageSchemas>

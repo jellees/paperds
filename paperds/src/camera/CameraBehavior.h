@@ -1,6 +1,6 @@
 #pragma once
 
-typedef Camera;
+class Camera;
 
 class CameraBehavior
 {

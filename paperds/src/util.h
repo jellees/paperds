@@ -1,7 +1,7 @@
 #pragma once
 
-void* Util_LoadFileToBuffer(const char* path, uint32_t* size, bool tempoarly);
-void* Util_LoadLZ77FileToBuffer(const char* path, uint32_t* size, bool tempoarly);
+void* Util_LoadFileToBuffer(const char* path, uint32_t* size, bool temporary);
+void* Util_LoadLZ77FileToBuffer(const char* path, uint32_t* size, bool temporary);
 void Util_LoadTextureWithKey(NNSGfdTexKey key, void* data);
 void Util_LoadTexture4x4WithKey(NNSGfdTexKey key, void* data, void* indexData);
 void Util_LoadTextureFromCard(const char* texPath, const char* plttPath, NNSGfdTexKey &texKey, NNSGfdPlttKey &plttKey);
@@ -22,14 +22,21 @@ void Util_SetupSubOAMForDouble3D();
 void Util_SetupBillboardMatrix();
 void Util_SetupBillboardYMatrix();
 
-static inline void VEC_Mul(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab)
+static inline void VEC_ToRenderSpace(const VecFx32* vec, VecFx32* result)
+{
+	result->x = (vec->x + 8) >> 4;
+	result->y = (vec->y + 8) >> 4;
+	result->z = (vec->z + 8) >> 4;
+}
+
+static inline void VEC_Mul(const VecFx32* a, const VecFx32* b, VecFx32* ab)
 {
 	ab->x = FX_Mul(a->x, b->x);
 	ab->y = FX_Mul(a->y, b->y);
 	ab->z = FX_Mul(a->z, b->z);
 }
 
-static inline void VEC_MulByFx32(VecFx32 *a, fx32 b, VecFx32 *ab)
+static inline void VEC_MulByFx32(VecFx32* a, fx32 b, VecFx32* ab)
 {
 	ab->x = FX_Mul(a->x, b);
 	ab->y = FX_Mul(a->y, b);

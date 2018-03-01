@@ -1,7 +1,6 @@
 #pragma once
 #include "common.h"
 #include "print.h"
-#include "util.h"
 
 #define LOAD_OVERLAY_ITCM(name)	\
 	do {	\
@@ -52,3 +51,5 @@ void operator delete[](void *block) throw();
 #endif
 
 void Core_Init();
+
+#include "util.h"

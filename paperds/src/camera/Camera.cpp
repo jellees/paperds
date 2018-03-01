@@ -1,4 +1,5 @@
 #include "common.h"
+#include "CameraBehavior.h"
 #include "StandardCamera.h"
 #include "Camera.h"
 

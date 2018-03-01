@@ -1,12 +1,12 @@
 #include "common.h"
 
-void* Util_LoadFileToBuffer(const char* path, uint32_t* size, bool tempoarly)
+void* Util_LoadFileToBuffer(const char* path, uint32_t* size, bool temporary)
 {
 	FSFile file;
 	FS_InitFile(&file);
 	FS_OpenFile(&file, path);
 	uint32_t mSize = FS_GetLength(&file);
-	void* buffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSize, (tempoarly ? -32 : 32));
+	void* buffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSize, (temporary ? -32 : 32));
 	if (buffer != NULL)
 		FS_ReadFile(&file, buffer, (int)mSize);
 	FS_CloseFile(&file);
@@ -15,7 +15,7 @@ void* Util_LoadFileToBuffer(const char* path, uint32_t* size, bool tempoarly)
 	return buffer;
 }
 
-void* Util_LoadLZ77FileToBuffer(const char* path, uint32_t* size, bool tempoarly)
+void* Util_LoadLZ77FileToBuffer(const char* path, uint32_t* size, bool temporary)
 {
 	FSFile file;
 	FS_InitFile(&file);
@@ -23,7 +23,7 @@ void* Util_LoadLZ77FileToBuffer(const char* path, uint32_t* size, bool tempoarly
 	MICompressionHeader header;
 	FS_ReadFile(&file, &header, sizeof(MICompressionHeader));
 	uint32_t mSize = MI_GetUncompressedSize(&header);
-	void* buffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSize, (tempoarly ? -32 : 32));
+	void* buffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSize, (temporary ? -32 : 32));
 	if (buffer != NULL)
 	{
 		void* tmpBuffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, 512, -32);

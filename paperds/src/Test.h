@@ -1,13 +1,18 @@
 #pragma once
+
+class Player;
+
 class Test
 {
 private:
-	NNSG3dResFileHeader* mModelResource;
-	NNSG3dRenderObj mModelRender;
+	NNSG3dResFileHeader* _modelResource;
+	NNSG3dRenderObj _modelRender;
 
-	VecFx32 mUp;
-	VecFx32 mPosition;
-	VecFx32 mAt;
+	VecFx32 _up;
+	VecFx32 _position;
+	VecFx32 _at;
+
+	Player* _mario;
 
 public:
 	Test();
