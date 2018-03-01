@@ -2,6 +2,7 @@
 #include "Test.h"
 
 
+
 Test::Test()
 {
 	GX_SetBankForLCDC(GX_VRAM_LCDC_ALL);
@@ -64,6 +65,7 @@ void* Test::OpenFile(char* path)
 
 Test::~Test()
 {
+	NNS_FndFreeToExpHeap(gHeapHandle, mModelResource);
 }
 
 
