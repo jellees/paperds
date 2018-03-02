@@ -1,3 +1,5 @@
+#include "common.h"
+#include "Player.h"
 #include "NormalBehavior.h"
 
 
@@ -15,4 +17,5 @@ NormalBehavior::~NormalBehavior()
 
 void NormalBehavior::Update()
 {
+	
 }

@@ -10,11 +10,12 @@ Player::Player()
 	VEC_Set(&_position, 0, 0, 0);
 	VEC_Set(&_prevPosition, 0, 0, 0);
 	VEC_Set(&_scale, FX32_CONST(2), FX32_CONST(2), FX32_CONST(2));
-	VEC_Set(&_direction, 0, 0, FX32_ONE);
+	VEC_Set(&_direction, FX32_ONE, 0, 0);
+	VEC_Set(&_acceleration, 0, 0, 0);
+	VEC_Set(&_velocity, 0, 0, 0);
 
-	_horizontalVelocity = 0;
-	_verticalVelocity = 0;
 	_gravity = 0;
+	_friction = FX32_CONST(-0.05);
 	
 	_normalBehavior = new NormalBehavior(this);
 	_currentBehavior = _normalBehavior;
@@ -41,11 +42,22 @@ void Player::Update()
 
 	_currentBehavior->Update();
 
-	VecFx32 velocity;
-	VEC_MulByFx32(&_direction, _horizontalVelocity, &velocity);
-	velocity.y = _verticalVelocity;
-	_verticalVelocity -= _gravity;
-	VEC_Add(&_position, &velocity, &_position);
+	// Add the gravity as force.
+	VecFx32 gravity = { 0, -_gravity, 0 };
+	AddForce(&gravity);
+	
+	// Add the friction as force.
+	VecFx32 friction;
+	VEC_Normalize(&_velocity, &friction);
+	VEC_MulByFx32(&friction, _friction, &friction);
+	AddForce(&friction);
+
+	// Add acceleration to velocity and velocity to position.
+	VEC_Add(&_velocity, &_acceleration, &_velocity);
+	VEC_Add(&_position, &_velocity, &_position);
+
+	// Reset the acceleration because each frame is a new time in space.
+	VEC_Set(&_acceleration, 0, 0, 0);
 }
 
 

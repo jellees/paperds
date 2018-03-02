@@ -44,7 +44,7 @@ Test::Test()
 
 	// Set camera matrix.
 	VEC_Set(&_up, 0, FX32_ONE, 0);
-	VEC_Set(&_position, FX32_CONST(36), FX32_CONST(36), 0);
+	VEC_Set(&_position, 0, FX32_CONST(36), FX32_CONST(40));
 	VEC_Set(&_at, 0, 0, 0);
 
 	// Create the player object as mario.
@@ -77,9 +77,9 @@ void Test::Update()
 {
 	uint16_t gKeys = PAD_Read();
 	if (gKeys & PAD_BUTTON_A)
-		_position.x += FX32_CONST(4);
+		_position.z += FX32_CONST(4);
 	else if (gKeys & PAD_BUTTON_B)
-		_position.x -= FX32_CONST(4);
+		_position.z -= FX32_CONST(4);
 
 	_mario->Update();
 }

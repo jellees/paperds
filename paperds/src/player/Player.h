@@ -5,15 +5,16 @@ class PlayerBehavior;
 class Player
 {
 private:
+	VecFx32 _acceleration;
+	VecFx32 _velocity;
 	VecFx32 _position;
 	VecFx32 _prevPosition;
+
 	VecFx32 _scale;
 	VecFx32 _direction;
 
-	fx32 _horizontalVelocity;
-	fx32 _verticalVelocity;
-
 	fx32 _gravity;
+	fx32 _friction;
 
 	PlayerBehavior* _normalBehavior;
 	PlayerBehavior* _currentBehavior;
@@ -28,29 +29,36 @@ public:
 	void Update();
 	void Render();
 
-	void SetPosition(VecFx32* position)
-	{
-		_position = *position;
-	}
-
 	void GetPosition(VecFx32* position)
 	{
 		*position = _position;
 	}
 
-	void SetHorizontalVelocity(fx32 velocity)
+	void GetVelocity(VecFx32* velocity)
 	{
-		_horizontalVelocity = velocity;
+		*velocity = _velocity;
 	}
 
-	void SetVerticalVelocity(fx32 velocity)
+	void SetDirection(VecFx32* direction)
 	{
-		_verticalVelocity = velocity;
+		_direction = *direction;
 	}
 
 	void SetGravity(fx32 gravity)
 	{
 		_gravity = gravity;
+	}
+
+	void AddForce(VecFx32* force)
+	{
+		VEC_Add(&_acceleration, force, &_acceleration);
+	}
+
+	void AddForceOnDirection(fx32 force)
+	{
+		VecFx32 directionalForce;
+		VEC_MulByFx32(&_direction, force, &directionalForce);
+		VEC_Add(&_acceleration, &directionalForce, &_acceleration);
 	}
 };
 
