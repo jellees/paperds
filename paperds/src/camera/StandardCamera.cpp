@@ -20,7 +20,7 @@ void StandardCamera::Update()
 	VecFx32 target;
 	_camera->GetTarget(&target);
 	_camera->SetAt(&target);
-	target.z += FX32_CONST(40);
+	target.z += FX32_CONST(60);
 	target.y += FX32_CONST(20);
 	_camera->SetPosition(&target);
 }

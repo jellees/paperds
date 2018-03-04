@@ -1,5 +1,6 @@
 #include "common.h"
 #include "player/Player.h"
+#include "camera/Camera.h"
 #include "Test.h"
 
 
@@ -43,12 +44,19 @@ Test::Test()
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
 
 	// Set camera matrix.
-	VEC_Set(&_up, 0, FX32_ONE, 0);
+	/*VEC_Set(&_up, 0, FX32_ONE, 0);
 	VEC_Set(&_position, 0, FX32_CONST(36), FX32_CONST(40));
-	VEC_Set(&_at, 0, 0, 0);
+	VEC_Set(&_at, 0, 0, 0);*/
 
 	// Create the player object as mario.
 	_mario = new Player();
+
+	// Create a new camera object and set its type.
+	_camera = new Camera();
+	_camera->SetType(Camera::CAMERA_STANDARD);
+	VecFx32 target;
+	_mario->GetPosition(&target);
+	_camera->SetTarget(&target);
 }
 
 
@@ -75,13 +83,18 @@ Test::~Test()
 
 void Test::Update()
 {
-	uint16_t gKeys = PAD_Read();
+	/*uint16_t gKeys = PAD_Read();
 	if (gKeys & PAD_BUTTON_A)
 		_position.z += FX32_CONST(4);
 	else if (gKeys & PAD_BUTTON_B)
-		_position.z -= FX32_CONST(4);
+		_position.z -= FX32_CONST(4);*/
 
 	_mario->Update();
+	
+	VecFx32 target;
+	_mario->GetPosition(&target);
+	_camera->SetTarget(&target);
+	_camera->Update();
 }
 
 
@@ -102,7 +115,7 @@ void Test::Render()
 	NNS_G3dGeFlushBuffer();
 
 
-	VecFx32 up = _up;
+	/*VecFx32 up = _up;
 	VecFx32 pos = _position;
 	pos.x = (pos.x + 8) >> 4;
 	pos.y = (pos.y + 8) >> 4;
@@ -111,7 +124,8 @@ void Test::Render()
 	target.x = (target.x + 8) >> 4;
 	target.y = (target.y + 8) >> 4;
 	target.z = (target.z + 8) >> 4;
-	NNS_G3dGlbLookAt(&pos, &up, &target);
+	NNS_G3dGlbLookAt(&pos, &up, &target);*/
+	_camera->Apply();
 	NNS_G3dGlbFlushP();
 
 	NNS_G3dGeFlushBuffer();

@@ -13,7 +13,7 @@ private:
 	VecFx32 _at;
 
 	// A 3d vector to use as target to follow.
-	VecFx32* _target;
+	VecFx32 _target;
 
 	// All behaviors and the current active camera;
 	CameraBehavior* _standardCamera;
@@ -40,16 +40,16 @@ public:
 	// Sets the type camera as the active camera.
 	void SetType(Type type);
 
-	// Binds the target the camera is going to follow.
-	void BindTarget(VecFx32* target)
+	// Sets the target the camera is going to follow.
+	void SetTarget(VecFx32* target)
 	{
-		_target = target;
+		_target = *target;
 	}
 
 	// Gets the vector 3d of the position that the camera follows.
 	void GetTarget(VecFx32* target)
 	{
-		*target = *_target;
+		*target = _target;
 	}
 
 	// Sets the position of the camera.
