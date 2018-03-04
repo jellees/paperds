@@ -22,6 +22,8 @@ private:
 	NNSG3dResFileHeader* _modelResource;
 	NNSG3dRenderObj _modelRender;
 
+	void AddFriction();
+
 public:
 	Player();
 	~Player();

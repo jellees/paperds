@@ -5,6 +5,19 @@
 
 
 
+void Player::AddFriction()
+{
+	VecFx32 friction;
+	VEC_Normalize(&_velocity, &friction);
+	VEC_MulByFx32(&friction, _friction, &friction);
+	// Fix imprecissions.
+	friction.x = _velocity.x > _friction && _velocity.x < -_friction ? -_velocity.x : friction.x;
+	friction.y = _velocity.y > _friction && _velocity.y < -_friction ? -_velocity.y : friction.y;
+	friction.z = _velocity.z > _friction && _velocity.z < -_friction ? -_velocity.z : friction.z;
+	AddForce(&friction);
+}
+
+
 Player::Player()
 {
 	VEC_Set(&_position, 0, 0, 0);
@@ -15,7 +28,7 @@ Player::Player()
 	VEC_Set(&_velocity, 0, 0, 0);
 
 	_gravity = 0;
-	_friction = FX32_CONST(-0.05);
+	_friction = FX32_CONST(-0.2);
 	
 	_normalBehavior = new NormalBehavior(this);
 	_currentBehavior = _normalBehavior;
@@ -47,14 +60,14 @@ void Player::Update()
 	AddForce(&gravity);
 	
 	// Add the friction as force.
-	VecFx32 friction;
-	VEC_Normalize(&_velocity, &friction);
-	VEC_MulByFx32(&friction, _friction, &friction);
-	AddForce(&friction);
+	AddFriction();
 
 	// Add acceleration to velocity and velocity to position.
 	VEC_Add(&_velocity, &_acceleration, &_velocity);
 	VEC_Add(&_position, &_velocity, &_position);
+
+	NOCASH_Printf("acceleration: %X, %X,%X", _acceleration.x, _acceleration.y, _acceleration.z);
+	NOCASH_Printf("_velocity: %X, %X,%X", _velocity.x, _velocity.y, _velocity.z);
 
 	// Reset the acceleration because each frame is a new time in space.
 	VEC_Set(&_acceleration, 0, 0, 0);
