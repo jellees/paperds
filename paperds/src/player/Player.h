@@ -1,5 +1,7 @@
 #pragma once
 
+#define PLAYER_VEL_LIMIT FX32_CONST(1)
+
 class PlayerBehavior;
 
 class Player
@@ -15,6 +17,8 @@ private:
 
 	fx32 _gravity;
 	fx32 _friction;
+	fx32 _drag;
+	fx32 _grip;
 
 	PlayerBehavior* _normalBehavior;
 	PlayerBehavior* _currentBehavior;
@@ -23,6 +27,7 @@ private:
 	NNSG3dRenderObj _modelRender;
 
 	void AddFriction();
+	void AddDrag();
 
 public:
 	Player();
@@ -61,6 +66,11 @@ public:
 		VecFx32 directionalForce;
 		VEC_MulByFx32(&_direction, force, &directionalForce);
 		VEC_Add(&_acceleration, &directionalForce, &_acceleration);
+	}
+
+	void Walk(fx32 speed)
+	{
+		AddForceOnDirection(FX_Mul(speed, _grip));
 	}
 };
 

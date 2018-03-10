@@ -34,6 +34,10 @@ void NormalBehavior::Update()
 
 		VEC_Normalize(&direction, &direction);
 		_player->SetDirection(&direction);
-		_player->AddForceOnDirection(FX32_CONST(0.3));
+
+		if (pad & (PAD_KEY_UP | PAD_KEY_DOWN))
+			_player->Walk(FX32_CONST(0.75));
+		else
+			_player->Walk(FX32_CONST(1));
 	}
 }

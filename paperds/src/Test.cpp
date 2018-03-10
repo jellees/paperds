@@ -35,18 +35,13 @@ Test::Test()
 	NNS_GfdResetLnkPlttVramState();
 
 	// Open model.
-	_modelResource = (NNSG3dResFileHeader*)OpenFile("/data/summersky.nsbmd");
+	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/coltest.nsbmd", NULL, FALSE);
 	NNS_G3dResDefaultSetup(_modelResource);
-	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)OpenFile("/data/summersky.nsbtx");
+	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/coltest.nsbtx", NULL, TRUE);
 	NNS_G3dResDefaultSetup(resourceTextures);
-	NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
+	BOOL binded = NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&_modelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
-
-	// Set camera matrix.
-	/*VEC_Set(&_up, 0, FX32_ONE, 0);
-	VEC_Set(&_position, 0, FX32_CONST(36), FX32_CONST(40));
-	VEC_Set(&_at, 0, 0, 0);*/
 
 	// Create the player object as mario.
 	_mario = new Player();
@@ -60,21 +55,6 @@ Test::Test()
 }
 
 
-void* Test::OpenFile(char* path)
-{
-	FSFile file;
-	FS_InitFile(&file);
-	FS_OpenFile(&file, path);
-	uint32_t mSize = FS_GetLength(&file);
-	void* buffer = NNS_FndAllocFromExpHeapEx(gHeapHandle, mSize, 32);
-	if (buffer != NULL)
-		FS_ReadFile(&file, buffer, (int)mSize);
-	FS_CloseFile(&file);
-	DC_FlushRange(buffer, mSize);
-	return buffer;
-}
-
-
 Test::~Test()
 {
 	NNS_FndFreeToExpHeap(gHeapHandle, _modelResource);
@@ -83,12 +63,6 @@ Test::~Test()
 
 void Test::Update()
 {
-	/*uint16_t gKeys = PAD_Read();
-	if (gKeys & PAD_BUTTON_A)
-		_position.z += FX32_CONST(4);
-	else if (gKeys & PAD_BUTTON_B)
-		_position.z -= FX32_CONST(4);*/
-
 	_mario->Update();
 	
 	VecFx32 target;
@@ -103,32 +77,15 @@ void Test::Render()
 	MtxFx44 mtx;
 	MTX_PerspectiveW(FX32_SIN30, FX32_COS30, 256 * 4096 / 192, FX32_CONST(1.5), FX32_CONST(2000), 1024, &mtx);
 	NNS_G3dGlbSetProjectionMtx(&mtx);
-
-
-	NNS_G3dGlbLightVector(GX_LIGHTID_0, 0, GX_FX32_FX10_MAX, 0);
-	NNS_G3dGlbLightColor(GX_LIGHTID_0, GX_RGB(0xFF, 0xFF, 0xFF));
-	NNS_G3dGlbLightVector(GX_LIGHTID_3, GX_FX32_FX10_MAX, 0, GX_FX32_FX10_MAX);
-	NNS_G3dGlbLightColor(GX_LIGHTID_3, GX_RGB(0xFF, 0xFF, 0xFF));
-	NNS_G3dGlbLightVector(GX_LIGHTID_2, GX_FX32_FX10_MAX, 0, GX_FX32_FX10_MAX);
-	NNS_G3dGlbLightColor(GX_LIGHTID_2, GX_RGB(0xFF, 0xFF, 0xFF));
 	NNS_G3dGlbFlushP();
 	NNS_G3dGeFlushBuffer();
 
-
-	/*VecFx32 up = _up;
-	VecFx32 pos = _position;
-	pos.x = (pos.x + 8) >> 4;
-	pos.y = (pos.y + 8) >> 4;
-	pos.z = (pos.z + 8) >> 4;
-	VecFx32 target = _at;
-	target.x = (target.x + 8) >> 4;
-	target.y = (target.y + 8) >> 4;
-	target.z = (target.z + 8) >> 4;
-	NNS_G3dGlbLookAt(&pos, &up, &target);*/
 	_camera->Apply();
 	NNS_G3dGlbFlushP();
-
 	NNS_G3dGeFlushBuffer();
+
+	_mario->Render();
+	NNS_G3dGlbFlushP();
 
 	NNS_G3dGePushMtx();
 	{
@@ -137,9 +94,7 @@ void Test::Render()
 		NNS_G3dDraw(&_modelRender);
 	}
 	NNS_G3dGePopMtx(1);
-	//NNS_G3dGlbFlushP();
-
-	_mario->Render();
+	NNS_G3dGlbFlushP();
 
 	NNS_G3dGeFlushBuffer();
 	G3_SwapBuffers(GX_SORTMODE_MANUAL, GX_BUFFERMODE_Z);
