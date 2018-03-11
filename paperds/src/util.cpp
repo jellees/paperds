@@ -208,13 +208,6 @@ void Util_DrawSpriteScaled(fx32 x, fx32 y, fx32 z, fx32 width, fx32 height, fx32
 	G3_PopMtx(1);
 }
 
-void VEC_Lerp(VecFx32* a, VecFx32* b, fx32 t, VecFx32* result)
-{
-	result->x = a->x + FX_Mul(b->x - a->x, t);
-	result->y = a->y + FX_Mul(b->y - a->y, t);
-	result->z = a->z + FX_Mul(b->z - a->z, t);
-}
-
 #include <nitro/code16.h>
 void Util_SetupSubOAMForDouble3D()
 {
@@ -372,4 +365,24 @@ void VEC_ProjectOnPlane(VecFx32* vec, VecFx32* norm, VecFx32* dest)
 	VecFx32 proj;
 	VEC_ProjectOnVector(vec, norm, &proj);
 	VEC_Subtract(vec, &proj, dest);
+}
+
+void VEC_Lerp(VecFx32* a, VecFx32* b, fx32 t, VecFx32* result)
+{
+	result->x = a->x + FX_Mul(b->x - a->x, t);
+	result->y = a->y + FX_Mul(b->y - a->y, t);
+	result->z = a->z + FX_Mul(b->z - a->z, t);
+}
+
+uint16_t gPrevKeys;
+uint16_t gKeys;
+uint16_t gKeysDown;
+uint16_t gKeysUp;
+
+void Util_ReadInput()
+{
+	gPrevKeys = gKeys;
+	gKeys = PAD_Read();
+	gKeysDown = (gKeys ^ gPrevKeys) & gKeys;
+	gKeysUp = (gKeys ^ gPrevKeys) & gPrevKeys;
 }

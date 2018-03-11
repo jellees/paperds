@@ -1,6 +1,7 @@
 #include "common.h"
 #include "player/Player.h"
 #include "camera/Camera.h"
+#include "collider/MeshCollider.h"
 #include "Test.h"
 
 
@@ -35,13 +36,18 @@ Test::Test()
 	NNS_GfdResetLnkPlttVramState();
 
 	// Open model.
-	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/coltest.nsbmd", NULL, FALSE);
+	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/course_model.nsbmd", NULL, FALSE);
 	NNS_G3dResDefaultSetup(_modelResource);
-	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/coltest.nsbtx", NULL, TRUE);
+	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/course_model.nsbtx", NULL, TRUE);
 	NNS_G3dResDefaultSetup(resourceTextures);
 	BOOL binded = NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&_modelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
+
+	// Create new mesh collider.
+	kcl_header* kcl = (kcl_header*)Util_LoadFileToBuffer("/data/course_collision.kcl", NULL, FALSE);
+	_meshCollider = new MeshCollider(kcl);
+	_meshCollider->NoTransform();
 
 	// Create the player object as mario.
 	_mario = new Player();
@@ -58,12 +64,15 @@ Test::Test()
 Test::~Test()
 {
 	NNS_FndFreeToExpHeap(gHeapHandle, _modelResource);
+	delete _meshCollider;
 }
 
 
 void Test::Update()
 {
-	_mario->Update();
+	Util_ReadInput();
+
+	_mario->Update(this);
 	
 	VecFx32 target;
 	_mario->GetPosition(&target);
@@ -85,7 +94,6 @@ void Test::Render()
 	NNS_G3dGeFlushBuffer();
 
 	_mario->Render();
-	NNS_G3dGlbFlushP();
 
 	NNS_G3dGePushMtx();
 	{
@@ -94,8 +102,8 @@ void Test::Render()
 		NNS_G3dDraw(&_modelRender);
 	}
 	NNS_G3dGePopMtx(1);
+	
 	NNS_G3dGlbFlushP();
-
 	NNS_G3dGeFlushBuffer();
 	G3_SwapBuffers(GX_SORTMODE_MANUAL, GX_BUFFERMODE_Z);
 }

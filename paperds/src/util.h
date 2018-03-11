@@ -15,8 +15,6 @@ void Util_FreeAllToExpHeapByGroupId(NNSFndHeapHandle heap, int groupId);
 void Util_DrawSprite(fx32 x, fx32 y, fx32 z, fx32 width, fx32 height);
 void Util_DrawSpriteScaled(fx32 x, fx32 y, fx32 z, fx32 width, fx32 height, fx32 scale);
 
-void VEC_Lerp(VecFx32* a, VecFx32* b, fx32 t, VecFx32* result);
-
 void Util_SetupSubOAMForDouble3D();
 
 void Util_SetupBillboardMatrix();
@@ -45,3 +43,9 @@ static inline void VEC_MulByFx32(VecFx32* a, fx32 b, VecFx32* ab)
 
 void VEC_ProjectOnVector(VecFx32* vec, VecFx32* vec2, VecFx32* dest);
 void VEC_ProjectOnPlane(VecFx32* vec, VecFx32* norm, VecFx32* dest);
+void VEC_Lerp(VecFx32* a, VecFx32* b, fx32 t, VecFx32* result);
+
+extern uint16_t gKeys;
+extern uint16_t gKeysDown;
+extern uint16_t gKeysUp;
+void Util_ReadInput();

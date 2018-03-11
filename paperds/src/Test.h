@@ -2,6 +2,7 @@
 
 class Player;
 class Camera;
+class Collider;
 
 class Test
 {
@@ -10,10 +11,11 @@ private:
 	NNSG3dRenderObj _modelRender;
 
 	Player* _mario;
-
 	Camera* _camera;
 
 public:
+	Collider * _meshCollider;
+
 	Test();
 	~Test();
 

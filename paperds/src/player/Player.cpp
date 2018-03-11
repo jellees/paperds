@@ -1,4 +1,5 @@
 #include "common.h"
+#include "Test.h"
 #include "PlayerBehavior.h"
 #include "NormalBehavior.h"
 #include "Player.h"
@@ -31,14 +32,17 @@ void Player::AddDrag()
 
 Player::Player()
 {
-	VEC_Set(&_position, 0, 0, 0);
+	VEC_Set(&_position, 0, FX32_CONST(2000), 0);
 	VEC_Set(&_prevPosition, 0, 0, 0);
 	VEC_Set(&_scale, FX32_CONST(1), FX32_CONST(1), FX32_CONST(1));
 	VEC_Set(&_direction, FX32_ONE, 0, 0);
 	VEC_Set(&_acceleration, 0, 0, 0);
 	VEC_Set(&_velocity, 0, 0, 0);
 
-	_gravity = 0;
+	_maxSpeed = FX32_CONST(3);
+	_maxGravity = FX32_CONST(40);
+
+	_gravity = FX32_CONST(0.5);
 	_friction = FX32_CONST(-0.5);
 	_drag = FX32_CONST(-0.1);
 	_grip = FX32_CONST(1);
@@ -53,45 +57,75 @@ Player::Player()
 	NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&_modelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
+
+	_collider = new SphereCollider(FX32_CONST(10));
 }
 
 
 Player::~Player()
 {
 	NNS_FndFreeToExpHeap(gHeapHandle, _modelResource);
+	
+	delete _normalBehavior;
+
+	delete _collider;
 }
 
 
-void Player::Update()
+void Player::Update(Test* test)
 {
 	_prevPosition = _position;
 
 	_currentBehavior->Update();
 
 	// Add the gravity as force.
-	VecFx32 gravity = { 0, -_gravity, 0 };
-	AddForce(&gravity);
-	
-	// Add other forces.
-	AddFriction();
-	AddDrag();
+	if (!_collider->mResponse.floor)
+	{
+		VecFx32 gravity = { 0, -_gravity, 0 };
+		AddForce(&gravity);
+	}
+	else
+	{
+		// Add other forces.
+		AddFriction();
+	}
 
 	// Add acceleration to velocity and velocity to position.
 	VEC_Add(&_velocity, &_acceleration, &_velocity);
+	_velocity.x = MATH_CLAMP(_velocity.x, -_maxSpeed, _maxSpeed);
+	_velocity.y = MATH_CLAMP(_velocity.y, -_maxGravity, _maxGravity);
+	_velocity.z = MATH_CLAMP(_velocity.z, -_maxSpeed, _maxSpeed);
 	VEC_Add(&_position, &_velocity, &_position);
 
-	//NOCASH_Printf("acceleration: %X, %X,%X", _acceleration.x, _acceleration.y, _acceleration.z);
-	NOCASH_Printf("_velocity: %X, %X,%X", _velocity.x, _velocity.y, _velocity.z);
+	// Collide with the main mesh.
+	_collider->SetPosition(&_prevPosition, &_position);
+	test->_meshCollider->Collide(_collider);
+	_collider->GetPosition(&_prevPosition, &_position);
+
+	//NOCASH_Printf("acceleration: %X, %X, %X", _acceleration.x, _acceleration.y, _acceleration.z);
+	NOCASH_Printf("_velocity: %X, %X, %X", _velocity.x / FX32_ONE, _velocity.y / FX32_ONE, _velocity.z / FX32_ONE);
 
 	// Reset the acceleration because each frame is a new time in space.
 	VEC_Set(&_acceleration, 0, 0, 0);
+
+	// Set y velocity to 0 if collision is found.
+	if (_collider->mResponse.floor)
+		_velocity.y = 0;
+
+
+	// Delete this later.
+	if (gKeys & PAD_KEY_LEFT)
+		_scale.x = FX32_ONE;
+	else if (gKeys & PAD_KEY_RIGHT)
+		_scale.x = -FX32_ONE;
 }
 
 
 void Player::Render()
 {
-	VecFx32 position;
-	VEC_ToRenderSpace(&_position, &position);
+	VecFx32 position = { 0, FX32_CONST(-10), 0 };
+	VEC_Add(&_position, &position, &position);
+	VEC_ToRenderSpace(&position, &position);
 
 	NNS_G3dGePushMtx();
 	{

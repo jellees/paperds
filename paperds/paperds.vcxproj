@@ -54,6 +54,10 @@
     <None Include="files\data\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\collider\Collider.cpp" />
+    <ClCompile Include="src\collider\MeshCollider.cpp" />
+    <ClCompile Include="src\collider\SphereCollider.cpp" />
+    <ClCompile Include="src\math\kcl.cpp" />
     <ClCompile Include="src\player\NormalBehavior.cpp" />
     <ClCompile Include="src\player\Player.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
@@ -66,6 +70,12 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\collider\Collider.h" />
+    <ClInclude Include="src\collider\MeshCollider.h" />
+    <ClInclude Include="src\collider\SphereCollider.h" />
+    <ClInclude Include="src\math\Cube3d.h" />
+    <ClInclude Include="src\math\kcl.h" />
+    <ClInclude Include="src\math\Quaternion.h" />
     <ClInclude Include="src\player\NormalBehavior.h" />
     <ClInclude Include="src\player\Player.h" />
     <ClInclude Include="src\camera\Camera.h" />

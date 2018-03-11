@@ -1,8 +1,11 @@
 #pragma once
 
+#include "collider/SphereCollider.h"
+
 #define PLAYER_VEL_LIMIT FX32_CONST(1)
 
 class PlayerBehavior;
+class Test;
 
 class Player
 {
@@ -15,6 +18,9 @@ private:
 	VecFx32 _scale;
 	VecFx32 _direction;
 
+	fx32 _maxSpeed;
+	fx32 _maxGravity;
+
 	fx32 _gravity;
 	fx32 _friction;
 	fx32 _drag;
@@ -26,6 +32,8 @@ private:
 	NNSG3dResFileHeader* _modelResource;
 	NNSG3dRenderObj _modelRender;
 
+	SphereCollider* _collider;
+
 	void AddFriction();
 	void AddDrag();
 
@@ -33,7 +41,7 @@ public:
 	Player();
 	~Player();
 
-	void Update();
+	void Update(Test* test);
 	void Render();
 
 	void GetPosition(VecFx32* position)
@@ -56,6 +64,11 @@ public:
 		_gravity = gravity;
 	}
 
+	void SetMaxSpeed(fx32 speed)
+	{
+		_maxSpeed = speed;
+	}
+
 	void AddForce(VecFx32* force)
 	{
 		VEC_Add(&_acceleration, force, &_acceleration);
@@ -71,6 +84,11 @@ public:
 	void Walk(fx32 speed)
 	{
 		AddForceOnDirection(FX_Mul(speed, _grip));
+	}
+
+	bool OnGround()
+	{
+		return _collider->mResponse.floor;
 	}
 };
 
