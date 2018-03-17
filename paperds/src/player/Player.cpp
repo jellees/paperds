@@ -109,17 +109,18 @@ void Player::Update(Test* test)
 	VEC_Set(&_acceleration, 0, 0, 0);
 
 	// Set y velocity to 0 if collision is found.
-	if (_collider->mResponse.floor)
+	if (_collider->mResponse.floor && _velocity.y < 0)
 		_velocity.y = 0;
 
+	// Update paper mechanics.
+	_paper.Update();
 
 	// Delete this later.
-	if (gKeys & PAD_KEY_LEFT)
-		_scale.x = FX32_ONE;
-	else if (gKeys & PAD_KEY_RIGHT)
-		_scale.x = -FX32_ONE;
+	if (gKeysDown & PAD_KEY_LEFT)
+		_paper.Flip(false);
+	else if (gKeysDown & PAD_KEY_RIGHT)
+		_paper.Flip(true);
 }
-
 
 void Player::Render()
 {
@@ -130,7 +131,14 @@ void Player::Render()
 	NNS_G3dGePushMtx();
 	{
 		NNS_G3dGeTranslateVec(&position);
+
+		_paper.GetScale(&_scale);
 		NNS_G3dGeScaleVec(&_scale);
+		
+		MtxFx33 rotation;
+		_paper.GetMatrix(&rotation);
+		NNS_G3dGeMultMtx33(&rotation);
+
 		NNS_G3dDraw(&_modelRender);
 	}
 	NNS_G3dGePopMtx(1);

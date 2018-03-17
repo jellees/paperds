@@ -50,7 +50,7 @@ void NormalBehavior::Update()
 	// Jump stuff.
 	if (gKeysDown & (PAD_BUTTON_A) && _player->OnGround())
 	{
-		VecFx32 jump = { 0, FX32_CONST(10) ,0 };
+		VecFx32 jump = { 0, FX32_CONST(7) ,0 };
 		_player->AddForce(&jump);
 	}
 }

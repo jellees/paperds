@@ -74,10 +74,26 @@ void Test::Update()
 
 	_mario->Update(this);
 	
-	VecFx32 target;
-	_mario->GetPosition(&target);
-	_camera->SetTarget(&target);
-	_camera->Update();
+	{
+		VecFx32 target;
+		_mario->GetPosition(&target);
+		if (!_mario->OnGround())
+		{
+			VecFx32 old;
+			_camera->GetTarget(&old);
+
+			fx32 threshold = FX32_CONST(55);
+
+			if (target.y - old.y < -threshold)
+				target.y = target.y + threshold;
+			else if (target.y - old.y > threshold)
+				target.y = target.y - threshold;
+			else
+				target.y = old.y;
+		}
+		_camera->SetTarget(&target);
+		_camera->Update();
+	}
 }
 
 

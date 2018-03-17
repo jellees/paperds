@@ -1,6 +1,7 @@
 #pragma once
 
 #include "collider/SphereCollider.h"
+#include "Paper.h"
 
 #define PLAYER_VEL_LIMIT FX32_CONST(1)
 
@@ -33,6 +34,8 @@ private:
 	NNSG3dRenderObj _modelRender;
 
 	SphereCollider* _collider;
+
+	Paper _paper;
 
 	void AddFriction();
 	void AddDrag();

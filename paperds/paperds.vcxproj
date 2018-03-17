@@ -76,6 +76,7 @@
     <ClInclude Include="src\math\Cube3d.h" />
     <ClInclude Include="src\math\kcl.h" />
     <ClInclude Include="src\math\Quaternion.h" />
+    <ClInclude Include="src\Paper.h" />
     <ClInclude Include="src\player\NormalBehavior.h" />
     <ClInclude Include="src\player\Player.h" />
     <ClInclude Include="src\camera\Camera.h" />

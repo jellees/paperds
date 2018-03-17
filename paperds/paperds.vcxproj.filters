@@ -154,5 +154,8 @@
     <ClInclude Include="src\collider\SphereCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Paper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
