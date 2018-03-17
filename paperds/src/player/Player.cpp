@@ -79,14 +79,15 @@ void Player::Update(Test* test)
 	_currentBehavior->Update();
 
 	// Add the gravity as force.
-	if (!_collider->mResponse.floor)
+	if (!_collider->mResponse.floor || _velocity.x || _velocity.z)
 	{
 		VecFx32 gravity = { 0, -_gravity, 0 };
 		AddForce(&gravity);
 	}
-	else
+
+	// Add friction as force.
+	if (_collider->mResponse.floor)
 	{
-		// Add other forces.
 		AddFriction();
 	}
 
