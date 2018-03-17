@@ -58,6 +58,7 @@
     <ClCompile Include="src\collider\MeshCollider.cpp" />
     <ClCompile Include="src\collider\SphereCollider.cpp" />
     <ClCompile Include="src\math\kcl.cpp" />
+    <ClCompile Include="src\Paper.cpp" />
     <ClCompile Include="src\player\NormalBehavior.cpp" />
     <ClCompile Include="src\player\Player.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
