@@ -75,18 +75,6 @@ int kcl_detect_collision(kcl_header* pKcl, VecFx32* curPos, VecFx32* prevPos, fx
 		VecFx32 localPos;
 		VEC_Subtract(curPos, &vertices[curPlane->vertexIdx], &localPos);
 
-		// if water face calculate length already
-		/*if ((curPlane->collisionType >> 8) & 0x80)
-		{
-			VecFx32 normal;
-			normal.x = (fx32)normals[curPlane->normalIdx].x;
-			normal.y = (fx32)normals[curPlane->normalIdx].y;
-			normal.z = (fx32)normals[curPlane->normalIdx].z;
-			fx32 dotN = VEC_DotProduct(&localPos, &normal);
-			response->waterNormal = normal;
-			response->waterLength = radius - dotN;
-		}*/
-
 		// -------------------------------------------------------
 		// Test whether localPos + radius is inside the triangle
 		// -------------------------------------------------------
@@ -133,14 +121,6 @@ int kcl_detect_collision(kcl_header* pKcl, VecFx32* curPos, VecFx32* prevPos, fx
 		// the face you are.
 		int length = radius - dotN;
 
-		// If you touch water, you will just fall through.
-		/*if ((curPlane->collisionType >> 8) & 0x80)
-		{
-			response->water = 1;
-			
-			continue;
-		}*/
-		
 		s64 squaredist;
 
 		if (dotA <= dotB && dotB <= dotC - curPlane->length && dotC - curPlane->length > 0)

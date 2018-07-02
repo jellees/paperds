@@ -7,6 +7,7 @@
 
 class PlayerBehavior;
 class Test;
+class AnimationManager;
 
 class Player
 {
@@ -36,6 +37,7 @@ private:
 	SphereCollider* _collider;
 
 	Paper _paper;
+	AnimationManager* _animationManager;
 
 	void AddFriction();
 	void AddDrag();

@@ -7,12 +7,13 @@
 
 Paper::Paper()
 {
-	_isRight = false;
+	_isRight = true;
 	_isRotating = -1;
 	_rotation = 0;
 	VEC_Set(&_scale, FX32_ONE, FX32_ONE, FX32_ONE);
 	MTX_RotY33(&_matrix, FX_SinIdx(FX_DEG_TO_IDX(_rotation)), FX_CosIdx(FX_DEG_TO_IDX(_rotation)));
 }
+
 
 void Paper::Update()
 {
@@ -52,6 +53,7 @@ void Paper::Update()
 		MTX_RotY33(&_matrix, FX_SinIdx(FX_DEG_TO_IDX(_rotation)), FX_CosIdx(FX_DEG_TO_IDX(_rotation)));
 	}
 }
+
 
 void Paper::Flip(bool toRight)
 {

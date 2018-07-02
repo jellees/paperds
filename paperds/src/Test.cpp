@@ -36,16 +36,16 @@ Test::Test()
 	NNS_GfdResetLnkPlttVramState();
 
 	// Open model.
-	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/course_model.nsbmd", NULL, FALSE);
+	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/textest_stage.nsbmd", NULL, FALSE);
 	NNS_G3dResDefaultSetup(_modelResource);
-	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/course_model.nsbtx", NULL, TRUE);
+	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/textest_stage.nsbtx", NULL, TRUE);
 	NNS_G3dResDefaultSetup(resourceTextures);
 	BOOL binded = NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&_modelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
 
 	// Create new mesh collider.
-	kcl_header* kcl = (kcl_header*)Util_LoadFileToBuffer("/data/course_collision.kcl", NULL, FALSE);
+	kcl_header* kcl = (kcl_header*)Util_LoadFileToBuffer("/data/textest_stage.kcl", NULL, FALSE);
 	_meshCollider = new MeshCollider(kcl);
 	_meshCollider->NoTransform();
 

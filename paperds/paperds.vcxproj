@@ -54,6 +54,7 @@
     <None Include="files\data\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\animation\AnimationManager.cpp" />
     <ClCompile Include="src\collider\Collider.cpp" />
     <ClCompile Include="src\collider\MeshCollider.cpp" />
     <ClCompile Include="src\collider\SphereCollider.cpp" />
@@ -71,6 +72,7 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\animation\AnimationManager.h" />
     <ClInclude Include="src\collider\Collider.h" />
     <ClInclude Include="src\collider\MeshCollider.h" />
     <ClInclude Include="src\collider\SphereCollider.h" />

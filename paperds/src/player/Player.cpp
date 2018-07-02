@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "PlayerBehavior.h"
 #include "NormalBehavior.h"
+#include "animation/AnimationManager.h"
 #include "Player.h"
 
 
@@ -32,7 +33,8 @@ void Player::AddDrag()
 
 Player::Player()
 {
-	VEC_Set(&_position, 0, FX32_CONST(2000), 0);
+	//VEC_Set(&_position, FX32_CONST(1000), FX32_CONST(1200), 0);
+	VEC_Set(&_position, FX32_CONST(100), FX32_CONST(100), 0);
 	VEC_Set(&_prevPosition, 0, 0, 0);
 	VEC_Set(&_scale, FX32_CONST(1), FX32_CONST(1), FX32_CONST(1));
 	VEC_Set(&_direction, FX32_ONE, 0, 0);
@@ -50,15 +52,24 @@ Player::Player()
 	_normalBehavior = new NormalBehavior(this);
 	_currentBehavior = _normalBehavior;
 
-	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario_prot.nsbmd", NULL, FALSE);
+	_modelResource = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/mario.nsbmd", NULL, FALSE);
 	NNS_G3dResDefaultSetup(_modelResource);
-	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario_prot.nsbtx", NULL, TRUE);
+	NNSG3dResFileHeader* resourceTextures = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/mario.nsbtx", NULL, TRUE);
 	NNS_G3dResDefaultSetup(resourceTextures);
 	NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(_modelResource), NNS_G3dGetTex(resourceTextures));
 	NNS_G3dRenderObjInit(&_modelRender, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	NNS_FndFreeToExpHeap(gHeapHandle, resourceTextures);
 
 	_collider = new SphereCollider(FX32_CONST(10));
+
+	_paper = Paper();
+
+	NNSG3dResFileHeader** animationResources = new NNSG3dResFileHeader*[3];
+	animationResources[0] = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/walk.nsbca", 0, false);
+	animationResources[1] = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/idle.nsbca", 0, false);
+	_animationManager = new AnimationManager(3, animationResources, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
+	_animationManager->SetRender(&_modelRender);
+	_animationManager->SetAnimation(1, FX32_CONST(0.5));
 }
 
 
@@ -121,6 +132,14 @@ void Player::Update(Test* test)
 		_paper.Flip(false);
 	else if (gKeysDown & PAD_KEY_RIGHT)
 		_paper.Flip(true);
+
+
+	// Delete this later.
+	if(_velocity.x != 0 || _velocity.z != 0)
+		_animationManager->SetAnimation(0, FX32_CONST(3));
+	else
+		_animationManager->SetAnimation(1, FX32_CONST(0.5));
+	_animationManager->Update();
 }
 
 void Player::Render()

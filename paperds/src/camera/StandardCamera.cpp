@@ -23,9 +23,9 @@ void StandardCamera::Update()
 
 	target.y += FX32_CONST(30);
 	target.y = at.y + FX_Mul(target.y - at.y, FX32_CONST(0.1));
-
 	_camera->SetAt(&target);
-	target.z += FX32_CONST(100);
+
+	target.z += FX32_CONST(125);
 	target.y += FX32_CONST(20);
 	_camera->SetPosition(&target);
 }
