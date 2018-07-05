@@ -64,10 +64,10 @@ Player::Player()
 
 	_paper = Paper();
 
-	NNSG3dResFileHeader** animationResources = new NNSG3dResFileHeader*[3];
+	NNSG3dResFileHeader** animationResources = new NNSG3dResFileHeader*[2];
 	animationResources[0] = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/walk.nsbca", 0, false);
 	animationResources[1] = (NNSG3dResFileHeader*)Util_LoadFileToBuffer("/data/mario/idle.nsbca", 0, false);
-	_animationManager = new AnimationManager(3, animationResources, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
+	_animationManager = new AnimationManager(2, animationResources, NNS_G3dGetMdlByIdx(NNS_G3dGetMdlSet(_modelResource), 0));
 	_animationManager->SetRender(&_modelRender);
 	_animationManager->SetAnimation(1, FX32_CONST(0.5));
 }
@@ -136,7 +136,7 @@ void Player::Update(Test* test)
 
 	// Delete this later.
 	if(_velocity.x != 0 || _velocity.z != 0)
-		_animationManager->SetAnimation(0, FX32_CONST(3));
+		_animationManager->SetAnimation(0, FX32_CONST(2));
 	else
 		_animationManager->SetAnimation(1, FX32_CONST(0.5));
 	_animationManager->Update();
